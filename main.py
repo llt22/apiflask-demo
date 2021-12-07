@@ -12,8 +12,8 @@ class PetNotFound(HTTPError):
 
 @app.get('/pets/<int:pet_id>')
 def get_pet(pet_id):
-    raise HTTPError(404, 'This pet is missing.')
-    # raise PetNotFound
+    # raise HTTPError(404, 'This pet is missing.')
+    raise PetNotFound
 
 
 if __name__ == '__main__':
