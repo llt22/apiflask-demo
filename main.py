@@ -1,31 +1,23 @@
-from apiflask import APIFlask, Schema, input, output
-from apiflask.fields import String, Integer, Field
+from apiflask import APIFlask
+
+from apiflask import HTTPError
 
 app = APIFlask(__name__)
 
 
-class BaseResponseSchema(Schema):
-    data = Field()
-    message = String()
-    code = Integer()
-
-
-class PetOutSchema(Schema):
-    pass
-
-
-app.config['BASE_RESPONSE_SCHEMA'] = BaseResponseSchema
+class PetNotFound(HTTPError):
+    status_code = 404
+    message = 'This pet is missing.',
 
 
 @app.get('/pets/<int:pet_id>')
-@output(PetOutSchema)
 def get_pet(pet_id):
-    return {
-        'data': None,
-        'message': 'Get pet successfully.',
-        'code': '1000'
-    }
+    raise HTTPError(404, 'This pet is missing.')
+    # raise PetNotFound
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(
+        debug=True,
+        port=80
+    )
